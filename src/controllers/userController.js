@@ -9,11 +9,15 @@ class UsersController{
     
         const passwordEncrypted = await hash(password,8) 
         
-        const userExist = await knex('user').where(email)
+        // const userExist = await knex('user').where(email)
         
-        if (userExist) throw new AppError('Usuario Já em uso, tente outro!')
+        console.log(name,
+            email,
+            passwordEncrypted,
+            )
+        // if (userExist) throw new AppError('Usuario Já em uso, tente outro!')
                 
-        await knex('users').insert(name, email, passwordEncrypted)
+        // await knex('users').insert(name, email, passwordEncrypted)
         
         return response.json()
     }
