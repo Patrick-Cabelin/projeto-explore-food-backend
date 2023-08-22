@@ -1,4 +1,4 @@
-const {hash , compare} = require('bcryptjs')
+const {hash} = require('bcryptjs')
 
 const knex= require('../database/knex')
 const AppError = require('../utils/AppError.js')
@@ -8,16 +8,15 @@ class UsersController{
         const {name, email, password} = request.body
     
         const passwordEncrypted = await hash(password,8) 
+        const userExist = await knex('users').where({email}).first()
         
-        // const userExist = await knex('user').where(email)
-        
-        console.log(name,
-            email,
-            passwordEncrypted,
-            )
-        // if (userExist) throw new AppError('Usuario Já em uso, tente outro!')
+
+        if (userExist) throw new AppError('Usuario Já em uso, tente outro!', 401)
                 
-        // await knex('users').insert(name, email, passwordEncrypted)
+        await knex('users').insert({name,
+            email,
+            password: passwordEncrypted,
+            admin: false})
         
         return response.json()
     }

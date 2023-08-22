@@ -1,9 +1,10 @@
 exports.up = knex => knex.schema.createTable('users', table => {
     table.increments('id')
     
-    table.text('name').notNullable()
+    table.text('name')
     table.text('email').notNullable()
-    table.text('password').notNullable()
+    table.text('password')
+    table.bool('admin')
     
 })
    
