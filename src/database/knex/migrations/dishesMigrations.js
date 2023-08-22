@@ -4,6 +4,7 @@ exports.up = knex => knex.schema.createTable('dishes', table => {
     table.text('name').notNullable()
     table.text('description')
     table.text('category')
+    table.text('image_of_dish')
     table.integer('price')
 
     
