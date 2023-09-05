@@ -10,11 +10,18 @@ const DishesImageControllers = require('../controllers/dishesImageControllers')
 const dishesControllers = new DishesControllers()
 const dishesImageControllers = new DishesImageControllers()
 
+const IngredientsControllers= require('../controllers/IngredientsControllers')
+const ingredientsControllers= new IngredientsControllers()
 
-dishesRoute.post('/', dishesControllers.Create)
-dishesRoute.put('/editdish/:id', dishesControllers.Update)
+dishesRoute.get('/:id' ,dishesControllers.Index)
+dishesRoute.get('/showdishes', dishesControllers.Show)
+dishesRoute.get('/ingredients/:id', ingredientsControllers.Show)
+
+dishesRoute.post('/' ,dishesControllers.Create)
+dishesRoute.post('/imageofdish', upload.single('newimage') ,dishesImageControllers.Create)
+
 dishesRoute.patch('/imageofdish/:dish_id', upload.single('image') ,dishesImageControllers.Update)
-dishesRoute.get('/showingredients/:dish_id', dishesControllers.Show)
+dishesRoute.put('/editdish/:id', dishesControllers.Update)
 
 
 module.exports = dishesRoute

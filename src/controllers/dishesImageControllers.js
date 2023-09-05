@@ -3,6 +3,17 @@ const AppError = require('../utils/AppError')
 const DiskStorage = require('../providers/diskStorage')
 
 class dishImageController{
+    async Create(request, response) {
+        const diskStorage = new DiskStorage()
+        const dishFileName = request.file?.filename
+        const { name } = request.body
+        const filename = await diskStorage.SaveFile(dishFileName)
+
+        await knex('dishes').where({ name }).update({ image_of_dish: filename })
+        
+        return response.json()
+    }
+    
     async Update(request , response){
         
         const diskStorage = new DiskStorage()
@@ -16,7 +27,6 @@ class dishImageController{
         
         const filename = await diskStorage.SaveFile(dishFileName)
         dish.image_of_dish = filename
-        console.log(dish)
         
         await knex('dishes').update(dish).where({id : dish_id})
 
