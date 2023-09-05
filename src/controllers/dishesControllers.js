@@ -1,16 +1,20 @@
 const knex = require('../database/knex')
 const AppError = require('../utils/AppError')
-const Diskstorage = require('../providers/diskStorage')
+const DiskStorage = require('../providers/diskStorage')
 
 
 class DishesControllers{
     async Create(request, response){
-        const {name, description, category, price, ingredients} = request.body
-        
+        const {name, description, category, price, ingredients, imageOfDish} = request.body
+        const diskStorage = new DiskStorage()
+
         const dishExist = await knex('dishes').where({name}).first()
         
-        console.log(dishExist)
         if(dishExist) throw new AppError('Prato ja existente')
+
+        console.log(imageOfDish)
+        if(imageOfDish){
+        }
 
         const [dish_id] = await knex('dishes').insert({
             name,
@@ -24,7 +28,6 @@ class DishesControllers{
             return { 
                 name,
                 dish_id,
-    
             }
         })
 
@@ -76,7 +79,6 @@ class DishesControllers{
         const {dish_id} = request.params
 
         const ingredients = await knex('ingredients').where({dish_id})
-        console.log(ingredients)
         return response.json(ingredients)
     }
 }
