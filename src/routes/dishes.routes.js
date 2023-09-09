@@ -13,8 +13,8 @@ const dishesImageControllers = new DishesImageControllers()
 const IngredientsControllers= require('../controllers/IngredientsControllers')
 const ingredientsControllers= new IngredientsControllers()
 
-dishesRoute.get('/:id' ,dishesControllers.Index)
-dishesRoute.get('/showdishes', dishesControllers.Show)
+dishesRoute.get('/dish/:id' ,dishesControllers.Show)
+dishesRoute.get('/showdishes', dishesControllers.Index)
 dishesRoute.get('/ingredients/:id', ingredientsControllers.Show)
 
 dishesRoute.post('/' ,dishesControllers.Create)

@@ -35,5 +35,5 @@ const responseError = (error, request, response, next) => {
 
 server.use(responseError)
 
-const PORT = 3009
+const PORT = 3000
 server.listen(PORT, ()=>console.log(`Servidor em Funcionamento na porta: ${PORT}`))
