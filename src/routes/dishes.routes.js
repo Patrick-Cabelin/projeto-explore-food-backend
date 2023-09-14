@@ -22,6 +22,8 @@ dishesRoute.post('/imageofdish', upload.single('newimage') ,dishesImageControlle
 
 dishesRoute.patch('/imageofdish/:dish_id', upload.single('image') ,dishesImageControllers.Update)
 dishesRoute.put('/editdish/:id', dishesControllers.Update)
+dishesRoute.delete('/dish/:id' ,dishesControllers.Delete)
+
 
 
 module.exports = dishesRoute

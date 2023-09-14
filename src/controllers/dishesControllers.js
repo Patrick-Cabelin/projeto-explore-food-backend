@@ -4,6 +4,29 @@ const AppError = require('../utils/AppError')
 const DiskStorage = require('../providers/diskStorage')
 
 class DishesControllers{
+    async Index(request, response) {
+        const { name } = request.query;
+        let dishes;
+      
+        dishes = await knex('dishes')
+          .select(['*'])
+          .where('dishes.name', 'like', `%${name}%`)
+          .orderBy('dishes.name');
+      
+        if (dishes.length === 0) {
+
+          dishes = await knex('dishes')
+            .select(['dishes.*'])
+            .distinct()
+            .innerJoin('ingredients', 'dishes.id', '=', 'ingredients.dish_id')
+            .where('ingredients.name', 'like', `%${name}%`)
+            .orderBy('dishes.name');
+        }      
+
+        return response.json(dishes)
+    
+    }
+
     async Create(request, response){
         const {name, description, category, price, ingredients} = request.body
         const dishExist = await knex('dishes').where({name}).first()
@@ -71,33 +94,19 @@ class DishesControllers{
     
     async Show(request,response){
         const {id} = request.params
-        const dishes = await knex('dishes').where({id})
+        const dishes = await knex('dishes').where({id}).first()
         
         return response.json(dishes)
     }
     
-    async Index(request, response) {
-        const { name } = request.query;
-        let dishes;
-      
-        dishes = await knex('dishes')
-          .select(['*'])
-          .where('dishes.name', 'like', `%${name}%`)
-          .orderBy('dishes.name');
-      
-        if (dishes.length === 0) {
-
-          dishes = await knex('dishes')
-            .select(['dishes.*'])
-            .distinct()
-            .innerJoin('ingredients', 'dishes.id', '=', 'ingredients.dish_id')
-            .where('ingredients.name', 'like', `%${name}%`)
-            .orderBy('dishes.name');
-        }      
-
-        return response.json(dishes)
-    
+    async Delete(request,response){
+        const {id} = request.params
+        
+        await knex('dishes').delete().where({id})
+        
+        return response.json()
     }
+  
 }
 
 
